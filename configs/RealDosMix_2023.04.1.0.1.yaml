@@ -1,0 +1,50 @@
+# General Settings
+mode: debug # {debug, live}
+version: 2023.04.1.0.1
+gpu: "6" # set specific gpu numbers to run(train, test both)
+num_workers: 0 # {0, int}
+OPENAI_API_KEY: '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'
+
+# Datasets
+datasets:
+  input_src_root: '/projects/meta4cut_BE/_assets/videos/MVs'
+  output_root: './SD_outputs'
+  batch_size: 10
+  preprocess:
+    hed_model_path: './models/hed/network-bsds500.pth'
+    midas_model_path: './models/midas/dpt_hybrid-midas-501f0c75.pt'
+    dlib_weight_path: "./models/ControlNet/control_facelandmark/shape_predictor_68_face_landmarks.dat"
+    body_openpose_weight_path: "./models/openpose/body_pose_model.pth"
+    hand_openpose_weight_path: "./models/openpose/hand_pose_model.pth"
+    if_hand: False
+    frame_interval: 50
+    
+
+# SD Parameters
+sd_params:
+  modelname: RealDosMix # {RealDosMix, BasilMix}
+  format: 'videos' # {images, videos, life4cut}
+  style: 'real_01' # {real_01, ainme_01}
+  if_lora: True
+  lora_name: 'koreanDollLikeness_v15'
+  if_recons_face: False
+  prompt_version: "v2023.03.01"
+  prompt_path: /projects/meta4cut_BE/prompts/real01_prompts.py
+  visual_gpt: False
+  scheduler: UniPCMultistepScheduler # {KDPM2DiscreteScheduler, UniPCMultistepScheduler}
+  seed: 343228725
+  cfg_scale: 12
+  denoise_strength: 0.65
+  num_inference_steps: 30
+  controlnet_conditioning_scale: [0.9, 0.4, 0.7]
+  annotation_typ_lst: ['facemask', 'hed', 'depth'] # 'pose', 
+  to_show_lst: ['facemask', 'hed', 'depth'] # 'pose'
+  sd_model_path: "runwayml/stable-diffusion-v1-5" # {"fsc0/RealDosMix", "runwayml/stable-diffusion-v1-5"}
+  vae_model_path: /projects/meta4cut_BE/models/RealDosMix/vae/
+  unet_model_path: /projects/meta4cut_BE/models/RealDosMix/unet/
+  custom_pipeline: ./modules/stable_diffusion_controlnet_img2img.py
+  torch_dtype: 16
+  
+# path to save experiment artifacts
+paths:
+  experiment_root: ./experiment
